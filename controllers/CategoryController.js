@@ -43,3 +43,25 @@ exports.ViewCategories = async (req, res) => {
     });
   }
 };
+
+exports.SearchCategory = (req, res) => {
+  query = req.query.query;
+  CategorySchema.find(
+    { cat_name: { $regex: query, $options: "i" } },
+    (err, category) => {
+      if (err)
+        return res.json({
+          code: 401,
+          success: false,
+          message: err.message,
+          data: {},
+        });
+      return res.json({
+        code: 200,
+        success: true,
+        message: "Search Results Found",
+        data: category,
+      });
+    }
+  );
+};

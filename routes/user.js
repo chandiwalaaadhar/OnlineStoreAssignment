@@ -17,4 +17,7 @@ router.post(
   ProductController.PurchaseProduct
 );
 
+router.get("/product/search", ProductController.SearchProduct);
+router.get("/category/search", CategoryController.SearchCategory);
+
 module.exports = router;

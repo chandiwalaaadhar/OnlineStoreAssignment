@@ -99,3 +99,25 @@ exports.PurchaseProduct = (req, res) => {
     data: {},
   });
 };
+
+exports.SearchProduct = (req, res) => {
+  query = req.query.query;
+  ProductSchema.find(
+    { prod_name: { $regex: query, $options: "i" } },
+    (err, product) => {
+      if (err)
+        return res.json({
+          code: 401,
+          success: false,
+          message: err.message,
+          data: {},
+        });
+      return res.json({
+        code: 200,
+        success: true,
+        message: "Search Results Found",
+        data: product,
+      });
+    }
+  );
+};
