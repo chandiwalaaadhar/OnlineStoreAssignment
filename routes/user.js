@@ -2,8 +2,11 @@ const express = require("express");
 const router = express.Router();
 const multer = require("multer");
 const authenticateToken = require("../middlewares/Auth");
+const CategoryController = require("../controllers/CategoryController");
+const ProductController = require("../controllers/ProductController");
 
-var upload = multer();
-router.post("/login", (req, res) => {});
+router.get("/categories", CategoryController.ViewCategories);
+
+router.get("/products", ProductController.GetProductsByCategory);
 
 module.exports = router;
