@@ -10,6 +10,11 @@ const ProductsModel = Schema({
   stock: { type: Number, required: true },
 });
 
+ProductsModel.methods.buy = function () {
+  this.stock -= 1;
+  this.save();
+};
+
 module.exports = mongoose.model(
   "Products",
   ProductsModel,

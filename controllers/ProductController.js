@@ -51,7 +51,11 @@ exports.GetProductsByCategory = async (req, res) => {
       cat_description: 0,
       _id: 0,
     })
-      .populate("products")
+      .populate({
+        path: "products",
+        match: { stock: { $gt: 0 } },
+        options: { sort: { stock: -1 } },
+      })
       .lean();
     return res.json({
       code: 200,
@@ -67,4 +71,31 @@ exports.GetProductsByCategory = async (req, res) => {
       data: {},
     });
   }
+};
+
+exports.PurchaseProduct = (req, res) => {
+  product_list = req.body.product;
+  for (var i = 0; i < product_list.length; i++) {
+    ProductSchema.findByIdAndUpdate(
+      product_list[i],
+      { $inc: { stock: -1 } },
+      null,
+      (err, product) => {
+        if (err) {
+          return res.json({
+            code: 401,
+            success: false,
+            message: err.message,
+            data: {},
+          });
+        }
+      }
+    );
+  }
+  return res.json({
+    code: 200,
+    success: true,
+    message: "Purchased",
+    data: {},
+  });
 };
