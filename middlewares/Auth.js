@@ -11,7 +11,7 @@ module.exports = function authenticateToken(req, res, next) {
       data: {},
     });
 
-  jwt.verify(token, "hidufhkshdfkhiyr322324b4jb1k24", (err, user) => {
+  jwt.verify(token, process.env.SECRET_KEY, (err, user) => {
     if (err)
       return res.json({
         code: 403,

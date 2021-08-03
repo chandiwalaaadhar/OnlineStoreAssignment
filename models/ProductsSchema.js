@@ -11,4 +11,8 @@ const ProductsModel = Schema({
   stock: { type: Number, required: true },
 });
 
-module.exports = mongoose.model("Products", ProductsModel, "products");
+module.exports = mongoose.model(
+  "Products",
+  ProductsModel,
+  "productsCollection"
+);

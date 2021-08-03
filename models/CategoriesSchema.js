@@ -7,4 +7,8 @@ const CategoriesModel = Schema({
   products: [{ type: Schema.Types.ObjectId, ref: "Products" }],
 });
 
-module.exports = mongoose.model("Categories", CategoriesModel, "categories");
+module.exports = mongoose.model(
+  "Categories",
+  CategoriesModel,
+  "categoriesCollection"
+);
