@@ -48,6 +48,7 @@ exports.SearchCategory = (req, res) => {
   query = req.query.query;
   CategorySchema.find(
     { cat_name: { $regex: query, $options: "i" } },
+    { products: 0 },
     (err, category) => {
       if (err)
         return res.json({
