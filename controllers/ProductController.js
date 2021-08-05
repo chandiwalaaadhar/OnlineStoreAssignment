@@ -47,16 +47,34 @@ exports.CreateNewProduct = (req, res) => {
 exports.GetProductsByCategory = async (req, res) => {
   try {
     category_id = req.query.category_id;
-    var products = await CategorySchema.findById(category_id, {
-      cat_description: 0,
-      _id: 0,
-    })
-      .populate({
-        path: "products",
-        match: { stock: { $gt: 0 } },
-        options: { sort: { stock: -1 } },
+    query = req.query.query;
+    sort = parseInt(req.query.sort);
+    if (sort === 0) {
+      var products = await CategorySchema.findById(category_id, {
+        cat_description: 0,
+        _id: 0,
       })
-      .lean();
+        .populate({
+          path: "products",
+          match: {
+            stock: { $gt: 0 },
+            prod_name: { $regex: query, $options: "i" },
+          },
+          options: { sort: { discounted_price: -1 } },
+        })
+        .lean();
+    } else if (sort === 1) {
+      var products = await CategorySchema.findById(category_id, {
+        cat_description: 0,
+        _id: 0,
+      })
+        .populate({
+          path: "products",
+          match: { stock: { $gt: 0 } },
+          options: { sort: { discounted_price: 1 } },
+        })
+        .lean();
+    }
     return res.json({
       code: 200,
       success: true,
@@ -103,7 +121,9 @@ exports.PurchaseProduct = (req, res) => {
 exports.SearchProduct = (req, res) => {
   query = req.query.query;
   ProductSchema.find(
-    { prod_name: { $regex: query, $options: "i" } },
+    {
+      prod_name: { $regex: query, $options: "i" },
+    },
     (err, product) => {
       if (err)
         return res.json({

@@ -20,7 +20,7 @@ exports.CreateNewCategory = (req, res) => {
       code: 200,
       success: true,
       message: "Category Succesfully Created",
-      data: {},
+      data: category,
     });
   });
 };
